@@ -1,0 +1,1183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jarurat Seva - Patient Registration</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: #e8f0fe;
+            min-height: 100vh;
+            padding: 30px 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .admin-link {
+            text-align: right;
+            margin-bottom: 10px;
+        }
+
+        .admin-link a {
+            color: #6c757d;
+            font-size: 0.75rem;
+            text-decoration: none;
+        }
+
+        .admin-link a:hover {
+            color: #0d6efd;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .form-section, .chatbot-card, .hospital-header {
+            animation: fadeIn 0.4s ease-out forwards;
+        }
+
+        .form-section:nth-child(1) { animation-delay: 0s; }
+        .form-section:nth-child(2) { animation-delay: 0.1s; }
+        .form-section:nth-child(3) { animation-delay: 0.2s; }
+        .chatbot-card { animation-delay: 0.3s; }
+
+        .hospital-header {
+            background: white;
+            padding: 20px 30px;
+            border-radius: 12px 12px 0 0;
+            border-bottom: 4px solid #0d6efd;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .hospital-name {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .hospital-icon {
+            font-size: 2rem;
+            color: #0d6efd;
+        }
+
+        .title-section h1 {
+            font-size: 1.5rem;
+            color: #1a2b4c;
+            font-weight: 700;
+        }
+
+        .title-section p {
+            font-size: 0.8rem;
+            color: #6c757d;
+            margin-top: 4px;
+        }
+
+        .registration-number {
+            background: #f8f9fa;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            color: #0d6efd;
+            font-weight: 500;
+        }
+
+        .form-card {
+            background: white;
+            padding: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .form-section {
+            margin-bottom: 30px;
+            border: 1px solid #e9ecef;
+            border-radius: 12px;
+            overflow: hidden;
+            opacity: 0;
+        }
+
+        .section-header {
+            background: #f8f9fa;
+            padding: 14px 20px;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .section-header h3 {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: #1a2b4c;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .section-header h3 span {
+            background: #0d6efd;
+            color: white;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            padding: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #495057;
+            margin-bottom: 6px;
+        }
+
+        .form-group label .required-star {
+            color: #dc3545;
+        }
+
+        input, select, textarea {
+            padding: 10px 12px;
+            border: 1.5px solid #dee2e6;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-family: 'Roboto', sans-serif;
+            transition: all 0.2s ease;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #0d6efd;
+            box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.15);
+        }
+
+        .field-hint {
+            font-size: 0.7rem;
+            color: #6c757d;
+            margin-top: 4px;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-4px); }
+            75% { transform: translateX(4px); }
+        }
+
+        input.error, select.error, textarea.error {
+            border-color: #dc3545;
+            background-color: #fff8f8;
+            animation: shake 0.3s ease-in-out;
+        }
+
+        .error-message {
+            color: #dc3545;
+            font-size: 0.7rem;
+            margin-top: 4px;
+            display: none;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .error-message.show {
+            display: block;
+            animation: slideDown 0.2s ease-out;
+        }
+
+        input.valid, select.valid, textarea.valid {
+            border-color: #198754;
+            background-color: #f0fff4;
+        }
+
+        .form-actions {
+            padding: 20px;
+            background: #f8f9fa;
+            border-top: 1px solid #e9ecef;
+            display: flex;
+            gap: 15px;
+            justify-content: flex-end;
+        }
+
+        .btn-submit {
+            background: #0d6efd;
+            color: white;
+            padding: 12px 28px;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-submit:hover {
+            background: #0b5ed7;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(13, 110, 253, 0.3);
+        }
+
+        .btn-reset {
+            background: #f8f9fa;
+            color: #6c757d;
+            padding: 12px 28px;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-reset:hover {
+            background: #e9ecef;
+        }
+
+        @keyframes checkPop {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .receipt-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            animation: fadeIn 0.3s ease;
+            cursor: pointer;
+        }
+
+        .receipt-card {
+            background: white;
+            max-width: 520px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            border-radius: 20px;
+            animation: checkPop 0.3s ease;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            cursor: default;
+        }
+
+        .receipt-header {
+            background: #0d6efd;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .receipt-header .check-icon {
+            font-size: 3rem;
+            margin-bottom: 10px;
+        }
+
+        .receipt-header h2 {
+            font-size: 1.3rem;
+            margin-bottom: 5px;
+        }
+
+        .receipt-body {
+            padding: 20px;
+        }
+
+        .queue-info {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 12px;
+            text-align: center;
+            margin-bottom: 20px;
+            border: 1px solid #e9ecef;
+        }
+
+        .queue-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #0d6efd;
+        }
+
+        .queue-status {
+            display: inline-block;
+            padding: 4px 12px;
+            background: #ffc107;
+            color: #1a2b4c;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            margin-top: 8px;
+        }
+
+        .details-section {
+            margin-bottom: 20px;
+        }
+
+        .details-section h4 {
+            font-size: 0.8rem;
+            color: #6c757d;
+            margin-bottom: 10px;
+            border-bottom: 1px solid #e9ecef;
+            padding-bottom: 5px;
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            font-size: 0.85rem;
+            border-bottom: 1px dashed #f0f0f0;
+        }
+
+        .detail-label {
+            font-weight: 500;
+            color: #495057;
+        }
+
+        .detail-value {
+            color: #1a2b4c;
+            text-align: right;
+            max-width: 60%;
+            word-break: break-word;
+        }
+
+        .info-box {
+            background: #e7f1ff;
+            padding: 12px;
+            border-radius: 10px;
+            margin: 15px 0;
+        }
+
+        .info-box p {
+            font-size: 0.8rem;
+            margin: 5px 0;
+            color: #0a58ca;
+        }
+
+        .response-guarantee {
+            background: #d1e7dd;
+            padding: 12px;
+            border-radius: 10px;
+            text-align: center;
+            margin-top: 15px;
+        }
+
+        .response-guarantee p {
+            font-size: 0.8rem;
+            color: #0f5132;
+            margin: 5px 0;
+        }
+
+        .close-btn {
+            background: #0d6efd;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            margin-top: 15px;
+            width: 100%;
+            font-size: 1rem;
+        }
+
+        .close-btn:hover {
+            background: #0b5ed7;
+        }
+
+        .receipt-footer {
+            padding: 15px 20px;
+            background: #f8f9fa;
+            text-align: center;
+            font-size: 0.7rem;
+            color: #6c757d;
+            border-top: 1px solid #e9ecef;
+        }
+
+        .chatbot-card {
+            background: white;
+            margin-top: 20px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            overflow: hidden;
+            opacity: 0;
+        }
+
+        .chatbot-header {
+            background: #f8f9fa;
+            padding: 14px 20px;
+            border-bottom: 1px solid #e9ecef;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .chatbot-header h3 {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: #1a2b4c;
+        }
+
+        .chatbot-badge {
+            background: #e7f1ff;
+            color: #0d6efd;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 0.65rem;
+            font-weight: 700;
+        }
+
+        .faq-container {
+            padding: 20px;
+        }
+
+        .faq-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 12px;
+            margin-top: 10px;
+        }
+
+        .faq-question {
+            background: #f8f9fa;
+            padding: 12px 16px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: 1px solid #e9ecef;
+        }
+
+        .faq-question:hover {
+            background: #e9ecef;
+            transform: translateX(4px);
+        }
+
+        .faq-question strong {
+            font-size: 0.85rem;
+            color: #1a2b4c;
+            font-weight: 500;
+        }
+
+        .faq-answer {
+            margin-top: 10px;
+            padding: 10px 12px;
+            background: #e7f1ff;
+            border-radius: 8px;
+            display: none;
+            font-size: 0.8rem;
+            line-height: 1.5;
+            color: #0a58ca;
+        }
+
+        .faq-answer.show {
+            display: block;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .typing-animation {
+            margin-top: 10px;
+            padding: 10px 12px;
+            background: #e7f1ff;
+            border-radius: 8px;
+            display: none;
+            font-size: 0.8rem;
+            color: #0d6efd;
+        }
+
+        .typing-animation.show {
+            display: block;
+        }
+
+        .typing-dots::after {
+            content: '...';
+            animation: dots 1.5s steps(3, end) infinite;
+            display: inline-block;
+            width: 24px;
+        }
+
+        @keyframes dots {
+            0%, 20% { content: '.'; }
+            40%, 60% { content: '..'; }
+            80%, 100% { content: '...'; }
+        }
+
+        .chatbot-footer {
+            padding: 12px 20px;
+            background: #f8f9fa;
+            border-top: 1px solid #e9ecef;
+            font-size: 0.7rem;
+            color: #6c757d;
+            text-align: center;
+        }
+
+        .admin-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .admin-card {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .submissions-table {
+            width: 100%;
+            border-collapse: collapse;
+            overflow-x: auto;
+            display: block;
+        }
+
+        .submissions-table th, .submissions-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        .submissions-table th {
+            background: #f8f9fa;
+            font-weight: 700;
+            position: sticky;
+            top: 0;
+        }
+
+        .submissions-table tr:hover {
+            background: #f8f9fa;
+        }
+
+        .delete-btn {
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .delete-btn:hover {
+            background: #c82333;
+        }
+
+        .login-box {
+            max-width: 400px;
+            margin: 100px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            text-align: center;
+        }
+
+        .login-box input {
+            width: 100%;
+            margin: 10px 0;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 20px;
+            color: #0d6efd;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+<div id="app"></div>
+
+<script>
+    // ========== YOUR GOOGLE SCRIPT URL (ALREADY CONFIGURED) ==========
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxNqLdXtMzqxx4g9sSYE7hQVg3X-JtWgyjRADbQe-qA8JIbRyCAl6b7pjm-FRvBFOVcUg/exec';
+    // ===================================================================
+    
+    const SUBMISSIONS_KEY = 'jarurat_submissions';
+    const QUEUE_KEY_PREFIX = 'queue_';
+    
+    function getTodayDateStr() {
+        const today = new Date();
+        return today.getDate().toString().padStart(2,'0') + (today.getMonth()+1).toString().padStart(2,'0') + today.getFullYear();
+    }
+    
+    function getSubmissions() {
+        const stored = localStorage.getItem(SUBMISSIONS_KEY);
+        return stored ? JSON.parse(stored) : [];
+    }
+    
+    function saveSubmission(submission) {
+        const submissions = getSubmissions();
+        submissions.push(submission);
+        localStorage.setItem(SUBMISSIONS_KEY, JSON.stringify(submissions));
+    }
+    
+    function getCurrentQueueNumber() {
+        const dateStr = getTodayDateStr();
+        let queueNum = localStorage.getItem(QUEUE_KEY_PREFIX + dateStr);
+        if (!queueNum) {
+            queueNum = 1;
+            localStorage.setItem(QUEUE_KEY_PREFIX + dateStr, queueNum);
+        } else {
+            queueNum = parseInt(queueNum);
+        }
+        return queueNum;
+    }
+    
+    function incrementQueueNumber() {
+        const dateStr = getTodayDateStr();
+        let queueNum = parseInt(localStorage.getItem(QUEUE_KEY_PREFIX + dateStr)) || 1;
+        localStorage.setItem(QUEUE_KEY_PREFIX + dateStr, queueNum + 1);
+        return queueNum;
+    }
+    
+    async function sendToGoogleSheet(formData) {
+        try {
+            const response = await fetch(SCRIPT_URL, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData)
+            });
+            console.log('Data sent to Google Sheet:', formData);
+            return true;
+        } catch (error) {
+            console.error('Error sending to Google Sheet:', error);
+            return false;
+        }
+    }
+    
+    function renderMainForm() {
+        const today = new Date();
+        const formattedDate = today.getDate().toString().padStart(2,'0') + '/' + (today.getMonth()+1).toString().padStart(2,'0') + '/' + today.getFullYear();
+        
+        const html = `
+            <div class="container">
+                <div class="admin-link">
+                    <a href="#" onclick="renderAdminLogin(); return false;">Admin Login</a>
+                </div>
+                <div class="hospital-header">
+                    <div class="hospital-name">
+                        <div class="logo-section">
+                            <div class="hospital-icon">🏥</div>
+                            <div class="title-section">
+                                <h1>JARURAT SEVA</h1>
+                                <p>Patient Support and Medical Assistance</p>
+                            </div>
+                        </div>
+                        <div class="registration-number">Date: ${formattedDate}</div>
+                    </div>
+                </div>
+
+                <div class="form-card">
+                    <form id="supportForm">
+                        <div class="form-section">
+                            <div class="section-header">
+                                <h3><span>1</span> PATIENT INFORMATION</h3>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Full Name <span class="required-star">*</span></label>
+                                    <input type="text" id="fullName" placeholder="Enter patient's full name">
+                                    <div class="field-hint">As per government ID</div>
+                                    <div class="error-message" id="nameError">Please fill out this field</div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Phone Number <span class="required-star">*</span></label>
+                                    <input type="tel" id="phone" placeholder="10-digit mobile number">
+                                    <div class="field-hint">Active WhatsApp number preferred</div>
+                                    <div class="error-message" id="phoneError">Please enter valid 10-digit number</div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Email Address</label>
+                                    <input type="email" id="email" placeholder="patient@example.com">
+                                    <div class="field-hint">Optional, for updates</div>
+                                    <div class="error-message" id="emailError">Enter valid email address</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-section">
+                            <div class="section-header">
+                                <h3><span>2</span> SUPPORT DETAILS</h3>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Type of Support <span class="required-star">*</span></label>
+                                    <select id="supportType">
+                                        <option value="">Select an option</option>
+                                        <option value="Medical Treatment">Medical Treatment</option>
+                                        <option value="Medicine Assistance">Medicine Assistance</option>
+                                        <option value="Surgery Financial Help">Surgery Financial Help</option>
+                                        <option value="Ambulance / Transport">Ambulance / Transport</option>
+                                        <option value="Other">Other</option>
+                                    </select>
+                                    <div class="error-message" id="typeError">Please select support type</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-section">
+                            <div class="section-header">
+                                <h3><span>3</span> MEDICAL DETAILS</h3>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Describe Medical Need <span class="required-star">*</span></label>
+                                    <textarea id="description" rows="4" placeholder="Please describe the patient's condition, diagnosis, required treatment, hospital name (if any), and any other relevant details..."></textarea>
+                                    <div class="field-hint">More details help us respond faster</div>
+                                    <div class="error-message" id="descError">Please describe the medical need</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="button" class="btn-reset" onclick="resetForm()">Clear Form</button>
+                            <button type="submit" class="btn-submit">Submit Request</button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="chatbot-card">
+                    <div class="chatbot-header">
+                        <span>🤖</span>
+                        <h3>Jarurat Sahayak - AI Help Desk</h3>
+                        <span class="chatbot-badge">24/7 AVAILABLE</span>
+                    </div>
+                    <div class="faq-container">
+                        <p style="font-size: 0.8rem; color: #6c757d; margin-bottom: 12px;">Common Questions - Click to get instant answer:</p>
+                        <div class="faq-grid">
+                            <div class="faq-question" onclick="askQuestion(1)">
+                                <strong>How do I request medical help?</strong>
+                                <div id="answer1" class="faq-answer"></div>
+                                <div id="typing1" class="typing-animation"><span class="typing-dots">AI is typing</span></div>
+                            </div>
+                            <div class="faq-question" onclick="askQuestion(2)">
+                                <strong>What documents are needed?</strong>
+                                <div id="answer2" class="faq-answer"></div>
+                                <div id="typing2" class="typing-animation"><span class="typing-dots">AI is typing</span></div>
+                            </div>
+                            <div class="faq-question" onclick="askQuestion(3)">
+                                <strong>Is there any fee for support?</strong>
+                                <div id="answer3" class="faq-answer"></div>
+                                <div id="typing3" class="typing-animation"><span class="typing-dots">AI is typing</span></div>
+                            </div>
+                            <div class="faq-question" onclick="askQuestion(4)">
+                                <strong>How long does approval take?</strong>
+                                <div id="answer4" class="faq-answer"></div>
+                                <div id="typing4" class="typing-animation"><span class="typing-dots">AI is typing</span></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="chatbot-footer">
+                        For emergency assistance, call our 24/7 helpline: 1800-XXX-XXXX | Automated AI assistant
+                    </div>
+                </div>
+            </div>
+        `;
+        
+        document.getElementById('app').innerHTML = html;
+        attachFormEvents();
+        attachChatbotEvents();
+    }
+    
+    const answers = {
+        1: "Fill out the form above with your full name, phone number, and describe your medical need. Our team will contact you within 24 hours. All support is completely free.",
+        2: "Required documents: Aadhar Card (patient), Doctor's Prescription, Medical Reports, Income Certificate (for financial help), and Bank Account details for direct support.",
+        3: "No, absolutely free. Jarurat Care Foundation provides complete medical support at zero cost to patients in need.",
+        4: "Typically 2-3 working days after submitting all required documents. Emergency cases are prioritized and processed within 24 hours."
+    };
+    
+    let currentOpen = null;
+    
+    function askQuestion(id) {
+        const answerDiv = document.getElementById(`answer${id}`);
+        const typingDiv = document.getElementById(`typing${id}`);
+        
+        if (currentOpen === id && answerDiv && answerDiv.classList.contains('show')) {
+            answerDiv.classList.remove('show');
+            if (typingDiv) typingDiv.classList.remove('show');
+            currentOpen = null;
+            return;
+        }
+        
+        if (currentOpen !== null) {
+            const prevAnswer = document.getElementById(`answer${currentOpen}`);
+            const prevTyping = document.getElementById(`typing${currentOpen}`);
+            if (prevAnswer) prevAnswer.classList.remove('show');
+            if (prevTyping) prevTyping.classList.remove('show');
+        }
+        
+        if (typingDiv) typingDiv.classList.add('show');
+        if (answerDiv) answerDiv.classList.remove('show');
+        
+        setTimeout(() => {
+            if (typingDiv) typingDiv.classList.remove('show');
+            if (answerDiv) {
+                answerDiv.innerHTML = answers[id];
+                answerDiv.classList.add('show');
+            }
+            currentOpen = id;
+        }, 800);
+    }
+    
+    function attachChatbotEvents() {
+        window.askQuestion = askQuestion;
+    }
+    
+    function validateField(fieldId, errorId, validationType) {
+        const field = document.getElementById(fieldId);
+        const error = document.getElementById(errorId);
+        if (!field || !error) return false;
+        let isValid = false;
+        let value = field.value.trim();
+        
+        switch(validationType) {
+            case 'required':
+                isValid = value !== '';
+                break;
+            case 'phone':
+                isValid = value !== '' && /^[0-9]{10}$/.test(value);
+                break;
+            case 'email':
+                if (value === '') {
+                    isValid = true;
+                    error.classList.remove('show');
+                    field.classList.remove('error');
+                    field.classList.add('valid');
+                    return true;
+                }
+                isValid = value.includes('@') && value.includes('.') && value.length > 5;
+                break;
+            case 'select':
+                isValid = value !== '';
+                break;
+        }
+        
+        if (isValid) {
+            error.classList.remove('show');
+            field.classList.remove('error');
+            field.classList.add('valid');
+        } else {
+            error.classList.add('show');
+            field.classList.add('error');
+            field.classList.remove('valid');
+        }
+        return isValid;
+    }
+    
+    function attachFormEvents() {
+        const form = document.getElementById('supportForm');
+        if (!form) return;
+        
+        document.getElementById('fullName')?.addEventListener('blur', () => validateField('fullName', 'nameError', 'required'));
+        document.getElementById('phone')?.addEventListener('blur', () => validateField('phone', 'phoneError', 'phone'));
+        document.getElementById('email')?.addEventListener('blur', () => validateField('email', 'emailError', 'email'));
+        document.getElementById('supportType')?.addEventListener('blur', () => validateField('supportType', 'typeError', 'select'));
+        document.getElementById('description')?.addEventListener('blur', () => validateField('description', 'descError', 'required'));
+        
+        form.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const isNameValid = validateField('fullName', 'nameError', 'required');
+            const isPhoneValid = validateField('phone', 'phoneError', 'phone');
+            const isEmailValid = validateField('email', 'emailError', 'email');
+            const isTypeValid = validateField('supportType', 'typeError', 'select');
+            const isDescValid = validateField('description', 'descError', 'required');
+            
+            if (isNameValid && isPhoneValid && isEmailValid && isTypeValid && isDescValid) {
+                const queueNum = getCurrentQueueNumber();
+                incrementQueueNumber();
+                
+                const now = new Date();
+                const dateStr = getTodayDateStr();
+                const referenceId = `JS-${dateStr}-${queueNum.toString().padStart(4,'0')}`;
+                
+                const formData = {
+                    id: Date.now(),
+                    timestamp: now.toISOString(),
+                    submissionDate: now.toLocaleDateString('en-IN'),
+                    submissionTime: now.toLocaleTimeString('en-IN'),
+                    queueNumber: queueNum,
+                    name: document.getElementById('fullName').value,
+                    phone: document.getElementById('phone').value,
+                    email: document.getElementById('email').value || 'Not provided',
+                    supportType: document.getElementById('supportType').options[document.getElementById('supportType').selectedIndex]?.text || '',
+                    description: document.getElementById('description').value,
+                    referenceId: referenceId
+                };
+                
+                // Save to local storage
+                saveSubmission(formData);
+                
+                // Send to Google Sheet
+                const sheetData = {
+                    queueNumber: formData.queueNumber,
+                    name: formData.name,
+                    phone: formData.phone,
+                    email: formData.email,
+                    supportType: formData.supportType,
+                    description: formData.description,
+                    referenceId: formData.referenceId,
+                    submissionDate: formData.submissionDate
+                };
+                
+                await sendToGoogleSheet(sheetData);
+                
+                showReceipt(formData);
+                resetForm();
+            }
+        });
+    }
+    
+    function showReceipt(formData) {
+        const dateStr = getTodayDateStr();
+        const waitMinutes = Math.floor(Math.random() * 4) + 2;
+        
+        const receiptHTML = `
+            <div class="receipt-overlay" id="receiptOverlay" onclick="closeReceipt(event)">
+                <div class="receipt-card" onclick="event.stopPropagation()">
+                    <div class="receipt-header">
+                        <div class="check-icon">✓</div>
+                        <h2>Request Received</h2>
+                        <p>Your form has been submitted successfully</p>
+                    </div>
+                    <div class="receipt-body">
+                        <div class="queue-info">
+                            <div>Queue Number</div>
+                            <div class="queue-number">#${formData.queueNumber}</div>
+                            <div class="queue-status">WAITING - In Queue</div>
+                        </div>
+                        
+                        <div class="details-section">
+                            <h4>Your Details</h4>
+                            <div class="detail-row">
+                                <span class="detail-label">Full Name:</span>
+                                <span class="detail-value">${escapeHtml(formData.name)}</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">Phone Number:</span>
+                                <span class="detail-value">${escapeHtml(formData.phone)}</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">Email:</span>
+                                <span class="detail-value">${escapeHtml(formData.email)}</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">Support Type:</span>
+                                <span class="detail-value">${escapeHtml(formData.supportType)}</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">Medical Need:</span>
+                                <span class="detail-value">${escapeHtml(formData.description.substring(0, 100))}${formData.description.length > 100 ? '...' : ''}</span>
+                            </div>
+                        </div>
+                        
+                        <div class="info-box">
+                            <p><strong>Submission Time:</strong> ${formData.submissionTime}, ${formData.submissionDate}</p>
+                            <p><strong>Estimated Queue Wait:</strong> ~${waitMinutes} minutes</p>
+                            <p><strong>Reference ID:</strong> ${formData.referenceId}</p>
+                        </div>
+                        
+                        <div class="response-guarantee">
+                            <p><strong>Form Confirmed</strong></p>
+                            <p>You are #${formData.queueNumber} in today's queue</p>
+                            <p><strong>Staff will respond within 24 hours</strong></p>
+                        </div>
+                        
+                        <button class="close-btn" onclick="closeReceipt()">OK, Close</button>
+                    </div>
+                    <div class="receipt-footer">
+                        Please save your Reference ID for future tracking
+                    </div>
+                </div>
+            </div>
+        `;
+        
+        document.body.insertAdjacentHTML('beforeend', receiptHTML);
+        
+        const escHandler = function(e) {
+            if (e.key === 'Escape') {
+                closeReceipt();
+                document.removeEventListener('keydown', escHandler);
+            }
+        };
+        document.addEventListener('keydown', escHandler);
+    }
+    
+    function escapeHtml(str) {
+        if (!str) return '';
+        return str.replace(/[&<>]/g, function(m) {
+            if (m === '&') return '&amp;';
+            if (m === '<') return '&lt;';
+            if (m === '>') return '&gt;';
+            return m;
+        });
+    }
+    
+    window.closeReceipt = function() {
+        const overlay = document.getElementById('receiptOverlay');
+        if (overlay) overlay.remove();
+    };
+    
+    window.resetForm = function() {
+        const form = document.getElementById('supportForm');
+        if (form) form.reset();
+        document.querySelectorAll('input, select, textarea').forEach(el => {
+            el.classList.remove('error', 'valid');
+        });
+        document.querySelectorAll('.error-message').forEach(el => {
+            el.classList.remove('show');
+        });
+    };
+    
+    // ========== ADMIN PANEL ==========
+    const ADMIN_PASSWORD = 'admin123';
+    
+    function renderAdminLogin() {
+        const html = `
+            <div class="container">
+                <div class="login-box">
+                    <h2>Admin Login</h2>
+                    <input type="password" id="adminPassword" placeholder="Enter Password">
+                    <button class="btn-submit" onclick="checkAdminLogin()">Login</button>
+                    <br>
+                    <a href="#" class="back-link" onclick="renderMainForm(); return false;">← Back to Form</a>
+                </div>
+            </div>
+        `;
+        document.getElementById('app').innerHTML = html;
+    }
+    
+    window.checkAdminLogin = function() {
+        const password = document.getElementById('adminPassword')?.value;
+        if (password === ADMIN_PASSWORD) {
+            renderAdminPanel();
+        } else {
+            alert('Incorrect password. Try: admin123');
+        }
+    };
+    
+    function renderAdminPanel() {
+        const submissions = getSubmissions();
+        
+        let tableRows = '';
+        if (submissions.length === 0) {
+            tableRows = '<tr><td colspan="7" style="text-align: center;">No submissions yet. Submit a form first.</td></tr>';
+        } else {
+            submissions.reverse().forEach(sub => {
+                tableRows += `
+                    <tr>
+                        <td>#${sub.queueNumber}</td>
+                        <td>${sub.submissionDate} ${sub.submissionTime}</td>
+                        <td>${escapeHtml(sub.name)}</td>
+                        <td>${escapeHtml(sub.phone)}</td>
+                        <td>${escapeHtml(sub.email)}</td>
+                        <td>${escapeHtml(sub.supportType)}</td>
+                        <td><button class="delete-btn" onclick="deleteSubmission(${sub.id})">Delete</button></td>
+                    </tr>
+                `;
+            });
+        }
+        
+        const html = `
+            <div class="container admin-container">
+                <div class="admin-card">
+                    <div class="admin-header">
+                        <h2>Submissions Dashboard</h2>
+                        <div>
+                            <strong>Total Submissions:</strong> ${submissions.length}
+                        </div>
+                    </div>
+                    <div style="overflow-x: auto;">
+                        <table class="submissions-table">
+                            <thead>
+                                <tr>
+                                    <th>Queue #</th>
+                                    <th>Date & Time</th>
+                                    <th>Name</th>
+                                    <th>Phone</th>
+                                    <th>Email</th>
+                                    <th>Support Type</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${tableRows}
+                            </tbody>
+                        </table>
+                    </div>
+                    <div style="margin-top: 20px; display: flex; gap: 10px; justify-content: space-between;">
+                        <button class="btn-reset" onclick="clearAllSubmissions()">Clear All Submissions</button>
+                        <button class="btn-submit" onclick="renderMainForm()">← Back to Form</button>
+                    </div>
+                </div>
+            </div>
+        `;
+        
+        document.getElementById('app').innerHTML = html;
+    }
+    
+    window.deleteSubmission = function(id) {
+        if (confirm('Are you sure you want to delete this submission?')) {
+            let submissions = getSubmissions();
+            submissions = submissions.filter(sub => sub.id !== id);
+            localStorage.setItem(SUBMISSIONS_KEY, JSON.stringify(submissions));
+            renderAdminPanel();
+        }
+    };
+    
+    window.clearAllSubmissions = function() {
+        if (confirm('Are you sure you want to delete ALL submissions? This cannot be undone.')) {
+            localStorage.removeItem(SUBMISSIONS_KEY);
+            renderAdminPanel();
+        }
+    };
+    
+    // ========== INITIAL RENDER ==========
+    renderMainForm();
+</script>
+</body>
+</html>
